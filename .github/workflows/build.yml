@@ -1,0 +1,46 @@
+name: Linux
+
+on:
+  push:
+    branches:
+      - '*'
+
+  pull_request:
+    branches:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
+        build_type: [RelWithDebInfo, Debug]
+
+    steps:
+    - name: Install system dependencies
+      run: |
+        sudo apt-get update
+
+        llvm_package_name="llvm-dev"
+        if [[ "${{ matrix.os }}" == "ubuntu-18.04" ]] ; then
+          llvm_package_name="llvm-10-dev"
+        fi
+
+        sudo apt-get install -y "${llvm_package_name}" \
+                                cmake
+
+    - uses: actions/checkout@v1
+
+    - name: Configure the project
+      run: |
+        cmake -S . \
+              -B bpf_tutorials_build \
+              -DCMAKE_BUILD_TYPE=RelWithDebInfo
+
+    - name: Build the project
+      run: |
+        cmake --build bpf_tutorials_build \
+              -v \
+              -j
