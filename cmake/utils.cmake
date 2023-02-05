@@ -7,7 +7,7 @@
 #
 
 function(importLLVM)
-  find_package(LLVM 10 REQUIRED)
+  find_package(LLVM REQUIRED)
 
   add_library(thirdparty_llvm INTERFACE)
   target_link_libraries(thirdparty_llvm INTERFACE

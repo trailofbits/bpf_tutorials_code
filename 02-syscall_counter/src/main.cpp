@@ -77,7 +77,7 @@ std::unique_ptr<llvm::Module> generateBPFModule(llvm::LLVMContext &context,
 
   // In this new basic block, the pointer is valid
   builder.SetInsertPoint(continue_bb);
-  auto counter = builder.CreateLoad(counter_ptr);
+  auto counter = builder.CreateLoad(builder.getInt32Ty(), counter_ptr);
 
   // Increment the counter and then update the value inside the map using
   // the pointer we have obtained
