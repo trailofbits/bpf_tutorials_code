@@ -134,7 +134,8 @@ std::unique_ptr<llvm::Module> generateExitBPFModule(llvm::LLVMContext &context,
   builder.SetInsertPoint(continue_bb);
 
   // Read back the old timestamp and obtain the current one
-  auto enter_timestamp = builder.CreateLoad(timestamp_ptr);
+  auto enter_timestamp =
+      builder.CreateLoad(builder.getInt64Ty(), timestamp_ptr);
   auto exit_timestamp = bpfKtimeGetNs(builder);
 
   // Measure how much it took to go from the first instruction to the return
